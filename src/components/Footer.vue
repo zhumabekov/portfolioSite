@@ -4,17 +4,19 @@
       <div class="footer">
         <div class="info">
           <span v-show="commandAnswer">
-            <font-awesome-icon class="icon" icon="chevron-right"/>{{commandAnswer}}
-            <p>{{answer}}</p>
+            <i class="fas fa-chevron-right"></i>{{ commandAnswer }}
+            <p>{{ answer }}</p>
           </span>
         </div>
         <div class="input">
-          <input type="text" v-model="command" @keyup.enter="submit">
+          <input type="text" v-model="command" @keyup.enter="submit" />
           <div class="input__icon">
-            <font-awesome-icon class="icon" icon="chevron-right"/>
+            <i class="fas fa-chevron-right"></i>
             <span class="input__data">
               <span class="underscore" v-show="!infoText && !command">_</span>
-              <span class="input__text" v-show="infoText">навигация по сайту через команды (контакты, ...)</span>
+              <span class="input__text" v-show="infoText"
+                >навигация по сайту через команды: контакты, ...</span
+              >
             </span>
           </div>
         </div>
@@ -29,94 +31,119 @@ export default {
       infoText: true,
       command: "",
       commandAnswer: "",
-      answer: ""
-    }
+      answer: "",
+    };
   },
   methods: {
     submit() {
       this.commandAnswer = this.command;
-    }
+      switch (this.command) {
+        case "clear":
+          this.answer = "";
+          this.commandAnswer = "";
+          break;
+      }
+      this.command = "";
+    },
   },
   mounted() {
-    setTimeout(()=>{this.infoText = false},15000);
-  }
-}
+    setTimeout(() => {
+      this.infoText = false;
+    }, 15000);
+  },
+};
 </script>
 <style lang="scss">
-  footer{
-    flex-basis: 100px;
+$textColor: #fefefd;
+footer {
+  flex-basis: 100px;
+}
+footer .container {
+  width: 95%;
+  height: 100%;
+  margin: 0 auto;
+}
+.footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+}
+.info {
+  flex: 1 1 auto;
+  overflow: hidden;
+  font-size: 0.8em;
+  font-family: monospace;
+  .fas {
+    margin-right: 2px;
   }
-  .container{
-    width: 95%;
-    height: 100%;
-    margin: 0 auto;
-  }
-  .footer{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    justify-content: space-between;
-  }
-  .info{
-    flex: 1 1 auto;
-    overflow: hidden;
-    font-size: 1em;
+}
+.input {
+  width: 100%;
+  height: 35px;
+  position: relative;
+  input {
+    display: block;
     font-family: monospace;
-    .icon{
-      margin-right: 2px;
-    }
-  }
-  .input{
     width: 100%;
-    height: 35px;
-    position: relative;
-    input{
-      font-family: monospace;
-      width: 100%;
-      font-size: 1.1em;
-      background-color: transparent;
-      padding-left: 14px;
-      color: #fefefe;
-      border: none;
-      &:focus + .input__icon>.input__data{
-        display: none;
-      }
-    }
-    .input__icon{
-      display: flex;
-      position: absolute;
-      top: 2px;
-    }
-    .input__text{
-      display: inline-block;
-      width: 48ch;
-      color: rgba(247, 247, 247, 0.8);
-      font-size: 1.1em;
-      overflow: hidden;
-      margin-left: 5px;
-      font-family: monospace;
-      white-space: nowrap;
-      border-right: 2px solid #fefefe;
-      animation: printedText 10s steps(48), flashingBorder .75s step-end infinite;
+    font-size: 1.1em;
+    background-color: transparent;
+    padding-left: 14px;
+    color: $textColor;
+    border: none;
+    &:focus + .input__icon > .input__data {
+      display: none;
     }
   }
-  .underscore{
-    font-weight: bold;
-    margin-left: 2px;
-    animation: flashing .75s step-end infinite;
+  .input__icon {
+    display: flex;
+    position: absolute;
+    top: -1px;
   }
-  @keyframes flashing{
-    0% {color: #fefefe;}
-    50% {color: transparent;}
-    100% {color: #fefefe;}
+  .input__text {
+    display: inline-block;
+    width: 47ch;
+    color: rgba(254, 254, 253, 0.8);
+    font-size: 1.1em;
+    overflow: hidden;
+    margin-left: 5px;
+    font-family: monospace;
+    white-space: nowrap;
+    border-right: 2px solid $textColor;
+    animation: printedText 8s steps(47), flashingBorder 0.75s step-end infinite;
   }
-  @keyframes flashingBorder{
-    0% {border-color: #fefefe;}
-    50% {border-color: transparent;}
-    100% {border-color: #fefefe;}
+}
+.underscore {
+  font-weight: bold;
+  margin-left: 2px;
+  animation: flashing 0.75s step-end infinite;
+}
+@keyframes flashing {
+  0% {
+    color: $textColor;
   }
-  @keyframes printedText{
-    from {width: 0%;}
+  50% {
+    color: transparent;
   }
+  100% {
+    color: $textColor;
+  }
+}
+@keyframes flashingBorder {
+  0% {
+    border-color: $textColor;
+  }
+  50% {
+    border-color: transparent;
+  }
+  100% {
+    border-color: $textColor;
+  }
+}
+@keyframes printedText {
+  from {
+    width: 0%;
+  }
+}
 </style>
